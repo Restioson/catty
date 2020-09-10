@@ -18,6 +18,7 @@ use std::{error::Error, future::Future, mem, pin::Pin, sync::Arc};
 struct InnerArc<T>(Arc<Spinlock<State<T>>>);
 
 impl<T> InnerArc<T> {
+    /// Replace the inner state of the channel with a new state given the old state.
     fn replace_state<R>(&self, f: impl FnOnce(State<T>) -> (R, State<T>)) -> R {
         let mut state = self.0.lock();
         let old_state = mem::take(&mut *state);
@@ -35,12 +36,10 @@ impl<T> Clone for InnerArc<T> {
 
 impl<T> Drop for InnerArc<T> {
     fn drop(&mut self) {
-        self.replace_state(|old| {
-            match old {
-                State::ReceiverWaiting(waker) => (waker.wake(), State::SideDropped),
-                State::ItemSent(it) => ((), State::ItemSent(it)),
-                _ => ((), State::SideDropped),
-            }
+        self.replace_state(|old| match old {
+            State::ReceiverWaiting(waker) => (waker.wake(), State::Disconnected),
+            State::ItemSent(it) => ((), State::ItemSent(it)),
+            _ => ((), State::Disconnected),
         })
     }
 }
@@ -49,7 +48,7 @@ enum State<T> {
     ReceiverNotYetPolled,
     ReceiverWaiting(Waker),
     ItemSent(T),
-    SideDropped,
+    Disconnected,
 }
 
 impl<T> Default for State<T> {
@@ -87,12 +86,10 @@ pub struct Sender<T>(InnerArc<T>);
 impl<T> Sender<T> {
     /// Sends an item, consuming the sender. This will return the item if the receiver was dropped.
     pub fn send(self, item: T) -> Result<(), T> {
-        self.0.replace_state(|old| {
-            match old {
-                State::SideDropped => (Err(item), State::SideDropped),
-                State::ReceiverWaiting(waker) => (Ok(waker.wake()), State::ItemSent(item)),
-                _ => (Ok(()), State::ItemSent(item)),
-            }
+        self.0.replace_state(|old| match old {
+            State::Disconnected => (Err(item), State::Disconnected),
+            State::ReceiverWaiting(waker) => (Ok(waker.wake()), State::ItemSent(item)),
+            _ => (Ok(()), State::ItemSent(item)),
         })
     }
 }
@@ -140,8 +137,8 @@ impl<T> Receiver<T> {
     /// ```
     pub fn try_recv(&mut self) -> Result<Option<T>, Disconnected> {
         self.0.replace_state(|old| match old {
-            State::ItemSent(item) => (Ok(Some(item)), State::SideDropped),
-            State::SideDropped => (Err(Disconnected), State::SideDropped),
+            State::ItemSent(item) => (Ok(Some(item)), State::Disconnected),
+            State::Disconnected => (Err(Disconnected), State::Disconnected),
             old => (Ok(None), old),
         })
     }
@@ -151,12 +148,10 @@ impl<T> Future for Receiver<T> {
     type Output = Result<T, Disconnected>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.0.replace_state(|old| {
-            match old {
-                State::ItemSent(item) => (Poll::Ready(Ok(item)), State::SideDropped),
-                State::SideDropped => (Poll::Ready(Err(Disconnected)), State::SideDropped),
-                _ => (Poll::Pending,  State::ReceiverWaiting(cx.waker().clone()))
-            }
+        self.0.replace_state(|old| match old {
+            State::ItemSent(item) => (Poll::Ready(Ok(item)), State::Disconnected),
+            State::Disconnected => (Poll::Ready(Err(Disconnected)), State::Disconnected),
+            _ => (Poll::Pending, State::ReceiverWaiting(cx.waker().clone())),
         })
     }
 }
