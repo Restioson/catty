@@ -1,3 +1,15 @@
+//! Send a value and asynchronously wait for it.
+//!
+//! # Example
+//! ```rust
+//! # pollster::block_on(async {
+//! let (tx, rx) = catty::oneshot();
+//! tx.send("Hello!");
+//! assert_eq!(rx.await, Ok("Hello!"));
+//! # })
+//! ```
+#![doc(html_logo_url = "https://raw.githubusercontent.com/Restioson/catty/master/catty.svg")]
+
 use spinning_top::{Spinlock, SpinlockGuard};
 use std::fmt::{self, Display, Formatter};
 use std::task::{Context, Poll, Waker};
