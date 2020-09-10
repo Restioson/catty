@@ -60,6 +60,8 @@ impl Display for Disconnected {
 
 impl Error for Disconnected {}
 
+/// The sender side of a oneshot channel, created with [`catty::oneshot`](fn.oneshot.html). A value
+/// can be sent into the channel to be waited on by the receiver.
 pub struct Sender<T>(InnerArc<T>);
 
 impl<T> Sender<T> {
@@ -78,6 +80,8 @@ impl<T> Sender<T> {
     }
 }
 
+/// The receiver side of a oneshot channel, created with [`catty::oneshot`](fn.oneshot.html). This
+/// is a future resolving to item, or an error if the sender side has been dropped.
 pub struct Receiver<T>(InnerArc<T>);
 
 impl<T> Receiver<T> {
@@ -121,18 +125,22 @@ impl<T> Future for Receiver<T> {
 /// Sending a value:
 ///
 /// ```rust
+/// # pollster::block_on(async {
 /// let (tx, rx) = catty::oneshot();
 /// tx.send("Hello!");
-/// assert_eq!(pollster::block_on(rx), Ok("Hello!"));
+/// assert_eq!(rx.await, Ok("Hello!"));
+/// # })
 /// ```
 ///
 /// Dropping the sender:
 ///
 /// ```rust
 /// # use catty::Disconnected;
+/// # pollster::block_on(async {
 /// let (tx, rx) = catty::oneshot::<u32>();
 /// drop(tx);
-/// assert_eq!(pollster::block_on(rx), Err(Disconnected));
+/// assert_eq!(rx.await, Err(Disconnected));
+/// # })
 /// ```
 ///
 /// Dropping the receiver:
