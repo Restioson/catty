@@ -5,6 +5,14 @@
 Send a value synchronously and asynchronously wait for it. Catty is faster, simpler, and more lightweight than
 [`futures::oneshot`](https://docs.rs/futures/0.3.5/futures/channel/oneshot/index.html), which is *slightly* more flexible.
 
+## Example
+
+```rust
+let (tx, rx) = catty::oneshot();
+tx.send("Hello!");
+assert_eq!(rx.await, Ok("Hello!"));
+```
+
 ## Benchmarks
 
 To run the benchmarks with Criterion, simply do `cargo bench`. On my machine, the results are as follows:
@@ -15,3 +23,7 @@ create-catty            time:   [47.774 ns 47.808 ns 47.843 ns]
 oneshot-futures         time:   [195.77 ns 195.88 ns 196.01 ns]
 oneshot-catty           time:   [134.70 ns 134.80 ns 134.91 ns]
 ```
+
+## Features
+
+To make `catty::oneshot` a `const fn`, enable the `nightly` feature.
