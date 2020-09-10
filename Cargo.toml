@@ -1,0 +1,27 @@
+[package]
+name = "catty"
+description = "Send and await a value asynchronously"
+version = "0.1.0"
+authors = ["Restioson <restiosondev@gmail.com>"]
+edition = "2018"
+license = "Apache-2.0"
+repository = "https://github.com/Restioson/catty"
+documentation = "https://docs.rs/catty"
+readme = "README.md"
+keywords = ["async", "futures", "async-await", "oneshot", "channel"]
+categories = ["asynchronous", "concurrency"]
+
+[dependencies]
+spinning_top = "0.2.2"
+
+[dev-dependencies]
+pollster = "0.2.0"
+criterion = "0.3.3"
+futures = "0.3.5"
+
+[features]
+nightly = ["spinning_top/nightly"]
+
+[[bench]]
+name = "basic"
+harness = false

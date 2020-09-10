@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="24.616337mm"
+   height="37.789753mm"
+   viewBox="0 0 24.616337 37.789753"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="catty.svg">
+  <defs
+     id="defs2">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect829"
+       is_visible="true" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="11.709117"
+     inkscape:cy="53.403103"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="960"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-62.0421,-115.43597)">
+    <g
+       id="g853"
+       transform="translate(-4.6605648e-6,4.1451021e-6)">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path815"
+         d="m 63.6098,117.23357 c 16.695979,25.4444 19.229402,23.01653 22.31065,-1.6651 l -0.77118,0.19193 c -4.093299,28.48634 -6.29318,18.69869 -20.837471,1.384 z"
+         style="fill:#784421;stroke:#000000;stroke-width:0.26499999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path817"
+         d="m 80.180856,135.23512 c 1.973479,3.15327 2.115284,18.92779 6.315557,17.80235 l -5.014182,-18.71318"
+         style="fill:#784421;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:original-d="m 64.311799,117.1444 c 1.82453,1.05297 3.711297,1.9434 5.566548,2.91549 1.855253,0.9721 -5.070915,4.34647 -7.606771,6.52009 -2.535854,2.17363 4.945454,2.55108 7.417784,3.82701 2.47233,1.27594 6.772338,-6.92983 10.158108,-10.39434 3.385772,-3.46452 3.534799,-2.8351 5.3018,-4.25225"
+         inkscape:path-effect="#path-effect829"
+         inkscape:connector-curvature="0"
+         id="path827"
+         d="m 64.311799,117.1444 c 0.43929,-0.61868 1.107817,-1.07057 1.845659,-1.24758 0.737842,-0.17701 1.538625,-0.0776 2.210789,0.27445 0.672164,0.35205 1.209902,0.95369 1.48458,1.66101 0.274678,0.70731 0.283921,1.51419 0.02552,2.22761 -0.293489,0.81029 -0.90906,1.47162 -1.611715,1.9706 -0.702654,0.49899 -1.495497,0.85318 -2.278518,1.21317 -0.783022,0.35998 -1.569248,0.73345 -2.248186,1.26426 -0.678938,0.53081 -1.250634,1.23821 -1.468352,2.07206 -0.219873,0.84211 -0.05541,1.76543 0.390375,2.51294 0.445783,0.74751 1.158622,1.32059 1.962404,1.6544 0.803783,0.3338 1.694197,0.43543 2.560847,0.35537 0.866649,-0.0801 1.710949,-0.33749 2.504158,-0.6957 2.228965,-1.00658 4.023938,-2.77692 5.577288,-4.66599 1.553349,-1.88908 2.91884,-3.9341 4.58082,-5.72835 1.545099,-1.66806 3.338094,-3.10611 5.3018,-4.25225"
+         style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>
