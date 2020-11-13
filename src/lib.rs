@@ -10,12 +10,12 @@
 //! ```
 #![doc(html_logo_url = "https://raw.githubusercontent.com/Restioson/catty/master/catty.svg")]
 
-use spinning_top::Spinlock;
+use spin::Mutex;
 use std::fmt::{self, Display, Formatter};
 use std::task::{Context, Poll, Waker};
 use std::{error::Error, future::Future, mem, pin::Pin, sync::Arc};
 
-struct InnerArc<T>(Arc<Spinlock<State<T>>>);
+struct InnerArc<T>(Arc<Mutex<State<T>>>);
 
 impl<T> InnerArc<T> {
     /// Replace the inner state of the channel with a new state given the old state.
@@ -190,46 +190,8 @@ impl<T> Future for Receiver<T> {
 /// drop(rx);
 /// assert_eq!(tx.send("Hello!"), Err("Hello!"));
 /// ```
-#[cfg(not(feature = "nightly"))]
 #[inline]
 pub fn oneshot<T: Send>() -> (Sender<T>, Receiver<T>) {
-    let inner_arc = InnerArc(Arc::new(Spinlock::new(State::default())));
-    (Sender(inner_arc.clone()), Receiver(inner_arc))
-}
-
-/// Creates a oneshot channel. A value can be sent into this channel and then be asynchronously
-/// waited for.
-///
-/// # Examples
-///
-/// Sending a value:
-///
-/// ```rust
-/// let (tx, rx) = catty::oneshot();
-/// tx.send("Hello!");
-/// assert_eq!(pollster::block_on(rx), Ok("Hello!"));
-/// ```
-///
-/// Dropping the sender:
-///
-/// ```rust
-/// # use catty::Disconnected;
-/// let (tx, rx) = catty::oneshot::<u32>();
-/// drop(tx);
-/// assert_eq!(pollster::block_on(rx), Err(Disconnected));
-/// ```
-///
-/// Dropping the receiver:
-///
-/// ```rust
-/// # use catty::Disconnected;
-/// let (tx, rx) = catty::oneshot::<&str>();
-/// drop(rx);
-/// assert_eq!(tx.send("Hello!"), Err("Hello!"));
-/// ```
-#[cfg(feature = "nightly")]
-#[inline]
-pub const fn oneshot<T: Send>() -> (Sender<T>, Receiver<T>) {
-    let inner_arc = InnerArc(Arc::new(Spinlock::new(State::default())));
+    let inner_arc = InnerArc(Arc::new(Mutex::new(State::default())));
     (Sender(inner_arc.clone()), Receiver(inner_arc))
 }
