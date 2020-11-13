@@ -1,7 +1,7 @@
 [package]
 name = "catty"
 description = "Send and await a value asynchronously"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["Restioson <restiosondev@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0"
