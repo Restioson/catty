@@ -28,6 +28,20 @@ fn oneshot_catty(b: &mut Bencher) {
     });
 }
 
+fn send_futures(b: &mut Bencher) {
+    b.iter(|| {
+        let (tx, _rx) = futures_oneshot::channel();
+        tx.send(black_box(10u32)).unwrap();
+    });
+}
+
+fn send_catty(b: &mut Bencher) {
+    b.iter(|| {
+        let (tx, _rx) = catty::oneshot();
+        tx.send(black_box(10u32)).unwrap();
+    });
+}
+
 fn create(c: &mut Criterion) {
     c.bench_function("create-futures", |b| create_futures(b));
     c.bench_function("create-catty", |b| create_catty(b));
@@ -38,5 +52,10 @@ fn oneshot(c: &mut Criterion) {
     c.bench_function("oneshot-catty", |b| oneshot_catty(b));
 }
 
-criterion_group!(compare, create, oneshot);
+fn send_only(c: &mut Criterion) {
+    c.bench_function("send-futures", |b| send_futures(b));
+    c.bench_function("send-catty", |b| send_catty(b));
+}
+
+criterion_group!(compare, create, oneshot, send_only);
 criterion_main!(compare);

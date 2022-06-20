@@ -1,7 +1,7 @@
 [package]
 name = "catty"
 description = "Send and await a value asynchronously"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Restioson <restiosondev@gmail.com>"]
 edition = "2018"
 license = "Apache-2.0"
@@ -12,7 +12,7 @@ keywords = ["async", "futures", "async-await", "oneshot", "channel"]
 categories = ["asynchronous", "concurrency"]
 
 [dependencies]
-spin = "0.7.0"
+spin = { version = "0.9.3", default-features = false, features = ["spin_mutex"] }
 
 [dev-dependencies]
 pollster = "0.2.0"
