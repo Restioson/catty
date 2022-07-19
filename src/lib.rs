@@ -118,7 +118,7 @@ impl<T> Receiver<T> {
     /// ```rust
     /// # use catty::Disconnected;
     /// # pollster::block_on(async {
-    /// let (tx, mut rx) = catty::oneshot();
+    /// let (tx, rx) = catty::oneshot();
     /// tx.send("Hello!");
     /// assert_eq!(rx.try_recv(), Ok(Some("Hello!")));
     /// # })
@@ -128,14 +128,14 @@ impl<T> Receiver<T> {
     /// ```rust
     /// # use catty::Disconnected;
     /// # pollster::block_on(async {
-    /// let (tx, mut rx) = catty::oneshot();
+    /// let (tx, rx) = catty::oneshot();
     /// tx.send("Hello!");
     /// assert_eq!(rx.try_recv(), Ok(Some("Hello!")));
     /// assert!(rx.try_recv().is_err());
     /// assert_eq!(rx.await, Err(Disconnected))
     /// # })
     /// ```
-    pub fn try_recv(&mut self) -> Result<Option<T>, Disconnected> {
+    pub fn try_recv(&self) -> Result<Option<T>, Disconnected> {
         self.0.replace_state(|old| match old {
             State::ItemSent(item) => (Ok(Some(item)), State::Disconnected),
             State::Disconnected => (Err(Disconnected), State::Disconnected),
