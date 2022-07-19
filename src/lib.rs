@@ -142,17 +142,25 @@ impl<T> Receiver<T> {
             old => (Ok(None), old),
         })
     }
+
+    /// Poll this [`Receiver`] for the sent item.
+    ///
+    /// This function can be called on `&self` and may thus be preferred over the [`Future`]
+    /// implementation in some scenarios.
+    pub fn poll_recv(&self, cx: &mut Context<'_>) -> Poll<Result<T, Disconnected>> {
+        self.0.replace_state(|old| match old {
+            State::ItemSent(item) => (Poll::Ready(Ok(item)), State::Disconnected),
+            State::Disconnected => (Poll::Ready(Err(Disconnected)), State::Disconnected),
+            _ => (Poll::Pending, State::ReceiverWaiting(cx.waker().clone())),
+        })
+    }
 }
 
 impl<T> Future for Receiver<T> {
     type Output = Result<T, Disconnected>;
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        self.0.replace_state(|old| match old {
-            State::ItemSent(item) => (Poll::Ready(Ok(item)), State::Disconnected),
-            State::Disconnected => (Poll::Ready(Err(Disconnected)), State::Disconnected),
-            _ => (Poll::Pending, State::ReceiverWaiting(cx.waker().clone())),
-        })
+        self.poll_recv(cx)
     }
 }
 
