@@ -12,7 +12,7 @@ keywords = ["async", "futures", "async-await", "oneshot", "channel"]
 categories = ["asynchronous", "concurrency"]
 
 [dependencies]
-spin = { version = "0.9.3", default-features = false, features = ["spin_mutex"] }
+spin = { version = "0.9.8", default-features = false, features = ["spin_mutex"] }
 
 [dev-dependencies]
 pollster = "0.2.0"
